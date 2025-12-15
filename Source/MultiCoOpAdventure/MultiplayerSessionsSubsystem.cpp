@@ -3,6 +3,7 @@
 
 #include "MultiplayerSessionsSubsystem.h"
 #include "OnlineSubsystem.h"
+#include "OnlineSessionSettings.h"
 
 void PrintString(const FString& Str)
 {
@@ -42,6 +43,33 @@ void UMultiplayerSessionsSubsystem::Deinitialize()
 void UMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 {
 	PrintString("CreateServer called");
+
+	if (ServerName.IsEmpty())
+	{
+		PrintString("Server Name cannot be empty!");
+		return;
+	}
+
+	FName MySessionName = FName("Co-op Adventure Session Name");
+
+	FOnlineSessionSettings SessionSettings;
+
+	SessionSettings.bAllowJoinInProgress = true;
+	SessionSettings.bIsDedicated = false;
+	SessionSettings.bShouldAdvertise = true;
+	SessionSettings.NumPublicConnections = 2;
+	SessionSettings.bUseLobbiesIfAvailable = true;
+	SessionSettings.bUsesPresence = true;
+	SessionSettings.bAllowJoinViaPresence = true;
+
+	bool IsLan = false;
+	if (IOnlineSubsystem::Get()->GetSubsystemName() == "NULL")
+	{
+		IsLan = true;
+	}
+	SessionSettings.bIsLANMatch = IsLan;
+
+	SessionInterface->CreateSession(0, MySessionName, SessionSettings);
 }
 
 void UMultiplayerSessionsSubsystem::FindServer(FString ServerName)
