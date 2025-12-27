@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Component/StaticMeshComponent.h"
 #include "PressurePlate.generated.h"
 
 UCLASS()
