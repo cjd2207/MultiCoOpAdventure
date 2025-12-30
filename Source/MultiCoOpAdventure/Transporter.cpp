@@ -1,4 +1,5 @@
 #include "Transporter.h"
+#include "PressurePlate.h"
 
 UTransporter::UTransporter()
 {
@@ -19,13 +20,30 @@ UTransporter::UTransporter()
 void UTransporter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
 
+	for (AActor* TA : TriggerActors)
+	{
+		APressurePlate* PressurePlateActor = Cast<APressurePlate>(TA);
+		if (PressurePlateActor)
+		{
+			PressurePlateActor->OnActivated.AddDynamic(this, &UTransporter::OnPressurePlateActivated);
+			PressurePlateActor->OnDeactivated.AddDynamic(this, &UTransporter::OnPressurePlateDeactivated);
+		}
+	}
+}
 
 void UTransporter::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (TriggerActors.Num() > 0)
+	{
+		AllTriggerActorsTriggered = ActivatedTriggerCount >= TriggerActors.Num();
+		if (AllTriggerActorsTriggered)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString("AllTriggeredActorsTriggered!"));
+		}
+	}
 }
 
 void UTransporter::SetPoints(FVector Point1, FVector Point2)
@@ -39,5 +57,21 @@ void UTransporter::SetPoints(FVector Point1, FVector Point2)
 	EndPoint = Point2;
 
 	ArePointsSet = true;
+}
+
+void UTransporter::OnPressurePlateActivated()
+{
+	ActivatedTriggerCount++;
+
+	FString Msg = FString::Printf(TEXT("Transporter Activated: %d"), ActivatedTriggerCount);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, Msg);
+}
+
+void UTransporter::OnPressurePlateDeactivated()
+{
+	ActivatedTriggerCount--;
+
+	FString Msg = FString::Printf(TEXT("Transporter Activated: %d"), ActivatedTriggerCount);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, Msg);
 }
 

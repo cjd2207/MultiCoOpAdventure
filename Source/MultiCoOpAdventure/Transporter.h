@@ -38,4 +38,10 @@ public:
 
 	UFUNCTION()
 	void SetPoints(FVector Point1, FVector Point2);
+
+	UFUNCTION()
+	void OnPressurePlateActivated();
+
+	UFUNCTION()
+	void OnPressurePlateDeactivated();
 };
