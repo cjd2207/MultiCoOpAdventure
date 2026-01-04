@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Transporter.h"
 #include "PressurePlate.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPressurePlateOnActivated);
@@ -43,5 +44,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FPressurePlateOnDeactivated OnDeactivated;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UTransporter* Transporter;
 
 };
