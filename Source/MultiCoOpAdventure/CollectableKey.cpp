@@ -2,7 +2,7 @@
 
 
 #include "Net/UnrealNetwork.h"
-
+#include "MultiCoOpAdventureCharacter.h"
 #include "CollectableKey.h"
 
 // Sets default values
@@ -42,6 +42,21 @@ void ACollectableKey::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HasAuthority())
+	{
+		TArray<AActor*> OverlapActors;
+		Capsule->GetOverlappingActors(OverlapActors, AMultiCoOpAdventureCharacter::StaticClass());
+
+		if (!OverlapActors.IsEmpty())
+		{
+			// Player character is overlapping the capsule
+			if (!IsCollected)
+			{
+				IsCollected = true;
+				OnRep_IsCollected();
+			}
+		}
+	}
 }
 
 void ACollectableKey::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -53,5 +68,14 @@ void ACollectableKey::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 void ACollectableKey::OnRep_IsCollected()
 {
+	if (HasAuthority())
+	{
+		UE_LOG(LogTemp, Display, TEXT("OnRep_IsCollected called from the server"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("OnRep_IsCollected called from the client"));
+	}
 
+	Mesh->SetVisibility(!IsCollected);
 }
