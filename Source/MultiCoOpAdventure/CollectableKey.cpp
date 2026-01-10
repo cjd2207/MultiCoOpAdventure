@@ -1,14 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Net/UnrealNetwork.h"
 #include "MultiCoOpAdventureCharacter.h"
 #include "CollectableKey.h"
 
-// Sets default values
 ACollectableKey::ACollectableKey()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	bReplicates = true;
@@ -28,22 +23,29 @@ ACollectableKey::ACollectableKey()
 	Mesh->SetupAttachment(RootComp);
 	Mesh->SetIsReplicated(true);
 	Mesh->SetCollisionProfileName(FName("OverlapAllDynamic"));
+
+	CollectAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	CollectAudio->SetupAttachment(RootComp);
+	CollectAudio->SetAutoActivate(false);
+
+	RotationSpeed = 100.0f;
 }
 
-// Called when the game starts or when spawned
 void ACollectableKey::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ACollectableKey::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	if (HasAuthority())
 	{
+		// Rotate the static Mesh
+		Mesh->AddRelativeRotation(FRotator(0.0f, RotationSpeed * DeltaTime, 0.0f));
+
 		TArray<AActor*> OverlapActors;
 		Capsule->GetOverlappingActors(OverlapActors, AMultiCoOpAdventureCharacter::StaticClass());
 
@@ -78,4 +80,6 @@ void ACollectableKey::OnRep_IsCollected()
 	}
 
 	Mesh->SetVisibility(!IsCollected);
+
+	CollectAudio->Play();
 }

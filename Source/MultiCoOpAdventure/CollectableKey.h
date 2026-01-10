@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
 #include "CollectableKey.generated.h"
 
 UCLASS()
@@ -30,6 +31,9 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_IsCollected, BlueprintReadWrite, VisibleAnywhere)
 	bool IsCollected;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float RotationSpeed;
+
 	UFUNCTION()
 	void OnRep_IsCollected();
 
@@ -42,4 +46,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	UStaticMeshComponent* Mesh;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAudioComponent* CollectAudio;
 };
