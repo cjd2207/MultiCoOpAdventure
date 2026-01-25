@@ -36,9 +36,10 @@ https://gamedev.tv/courses/ue-cpp-multiplayer
 This repository is for learning and portfolio purposes and follows the structure and lessons from the GameDev.tv course. Assets and code are used in accordance with the course license.
 
 Christopher Davis
+
 GitHub: https://github.com/cjd2207
 
 Your Name  
-GitHub: https://github.com/your-username
+GitHub: https://github.com/cjd2207
 
 <img width="1562" height="745" alt="image" src="https://github.com/user-attachments/assets/bc420fa8-2646-4163-ba44-202ce72b8142" />
