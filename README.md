@@ -39,7 +39,4 @@ Christopher Davis
 
 GitHub: https://github.com/cjd2207
 
-Your Name  
-GitHub: https://github.com/cjd2207
-
 <img width="1562" height="745" alt="image" src="https://github.com/user-attachments/assets/bc420fa8-2646-4163-ba44-202ce72b8142" />
